@@ -1,7 +1,7 @@
 
 import datetime
 from fastmcp import FastMCP
-from spidergate.auth.clients import get_google_services
+from spiderweb_mcp.auth.clients import get_google_services
 
 
 def _resolve_calendar_id(cal_service, calendar_name_or_id: str) -> str:

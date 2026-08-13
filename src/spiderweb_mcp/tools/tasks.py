@@ -1,6 +1,6 @@
 
 from fastmcp import FastMCP
-from spidergate.auth.clients import get_google_services
+from spiderweb_mcp.auth.clients import get_google_services
 
 
 def register_tasks_tools(mcp: FastMCP) -> None:

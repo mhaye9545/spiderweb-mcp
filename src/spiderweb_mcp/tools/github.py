@@ -1,7 +1,7 @@
 
 from fastmcp import FastMCP
 from github import GithubException
-from spidergate.auth.clients import get_github_client
+from spiderweb_mcp.auth.clients import get_github_client
 
 
 def register_github_tools(mcp: FastMCP) -> None:

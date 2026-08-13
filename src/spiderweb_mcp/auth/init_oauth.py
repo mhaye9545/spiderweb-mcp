@@ -1,7 +1,7 @@
 import sys
 from pathlib import Path
 from google_auth_oauthlib.flow import InstalledAppFlow
-from spidergate.auth.clients import SCOPES, _get_auth_dir
+from spiderweb_mcp.auth.clients import SCOPES, _get_auth_dir
 
 
 def run_auth_flow() -> None:
