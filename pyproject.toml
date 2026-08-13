@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "spidergate-mcp"
+name = "spiderweb-mcp"
 version = "0.1.0"
 description = "Central FastMCP gateway bridging Claude Code with Google Workspace and GitHub"
 readme = "README.md"
@@ -19,8 +19,8 @@ dependencies = [
 ]
 
 [project.scripts]
-spidergate = "spidergate.server:main"
-spidergate-auth = "spidergate.auth.init_oauth:run_auth_flow"
+spiderweb-mcp = "spiderweb_mcp.server:main"
+spiderweb-mcp-auth = "spiderweb_mcp.auth.init_oauth:run_auth_flow"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/spidergate"]
+packages = ["src/spiderweb_mcp"]
