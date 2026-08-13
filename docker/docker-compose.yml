@@ -1,0 +1,11 @@
+services:
+  spidergate:
+    container_name: runtime_spidergate
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    restart: unless-stopped
+    volumes:
+      - ../auth:/app/auth
+    env_file:
+      - ../.env
