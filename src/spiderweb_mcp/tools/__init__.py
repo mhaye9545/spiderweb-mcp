@@ -2,6 +2,7 @@ from .calendar import register_calendar_tools
 from .tasks import register_tasks_tools
 from .github import register_github_tools
 from .meta import register_meta_tools
+from .search import register_search_tools
 
 
 def register_all_tools(mcp) -> None:
@@ -9,3 +10,4 @@ def register_all_tools(mcp) -> None:
     register_tasks_tools(mcp)
     register_github_tools(mcp)
     register_meta_tools(mcp)
+    register_search_tools(mcp)
