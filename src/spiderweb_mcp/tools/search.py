@@ -12,6 +12,15 @@ from fastmcp import FastMCP
 SEARXNG_URL = "http://127.0.0.1:8888/search"
 
 
+def _unreachable_message(error: Exception) -> str:
+    return (
+        f"Local SearXNG instance is unreachable ({error}).\n"
+        "Start it with:\n"
+        "  docker compose -f docker/docker-compose.yml up -d searxng\n"
+        "Verify with curl: http://127.0.0.1:8888/search?q=test&format=json"
+    )
+
+
 def register_search_tools(mcp: FastMCP) -> None:
     """Register web search tools with the FastMCP gateway."""
 
@@ -32,6 +41,14 @@ def register_search_tools(mcp: FastMCP) -> None:
         }
 
         try:
+            try:
+                async with httpx.AsyncClient(timeout=1.0) as probe:
+                    health = await probe.get(SEARXNG_URL, params={"q": "_health", "format": "json"})
+                    if health.status_code != 200:
+                        return f"SearXNG returned status {health.status_code}. Is the container running?"
+            except (httpx.ConnectError, httpx.ReadTimeout) as err:
+                return _unreachable_message(err)
+
             async with httpx.AsyncClient(timeout=10.0) as client:
                 response = await client.get(SEARXNG_URL, params=params)
                 response.raise_for_status()
@@ -50,5 +67,7 @@ def register_search_tools(mcp: FastMCP) -> None:
 
             return "\n\n---\n\n".join(formatted)
 
+        except (httpx.ConnectError, httpx.ReadTimeout) as err:
+            return _unreachable_message(err)
         except httpx.HTTPError as err:
-            return f"Error connecting to local search backend: {err}"
+            return f"Search backend error: {err}"
