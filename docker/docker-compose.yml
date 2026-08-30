@@ -1,6 +1,6 @@
 services:
-  spidergate:
-    container_name: runtime_spidergate
+  spiderweb-mcp:
+    container_name: runtime_spiderweb-mcp
     build:
       context: ..
       dockerfile: docker/Dockerfile

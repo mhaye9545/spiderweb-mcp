@@ -36,7 +36,7 @@ def get_google_services() -> Tuple[Resource, Resource]:
                 token_file.write(creds.to_json())
         else:
             raise RuntimeError(
-                f"Valid Google OAuth token not found at '{token_path}'. Run 'spidergate-auth' or 'python -m spidergate.auth.init_oauth' first."
+                f"Valid Google OAuth token not found at '{token_path}'. Run 'spiderweb-mcp-auth' or 'python -m spiderweb_mcp.auth.init_oauth' first."
             )
 
     calendar_service = build("calendar", "v3", credentials=creds)

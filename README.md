@@ -1,10 +1,10 @@
-# Spidergate MCP
+# Spiderweb MCP
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python: 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![FastMCP](https://img.shields.io/badge/MCP-FastMCP-green.svg)](https://github.com/jlowin/fastmcp)
 
-**Spidergate** is a centralized Model Context Protocol (MCP) gateway designed to bridge **Claude Code** and LLM environments with your personal productivity stack—specifically **Google Workspace (Calendar & Tasks)** and **GitHub**.
+**Spiderweb MCP** is a centralized Model Context Protocol (MCP) gateway designed to bridge **Claude Code** and LLM environments with your personal productivity stack—specifically **Google Workspace (Calendar & Tasks)** and **GitHub**.
 
 Packaged as a lightweight, containerized Python service powered by `FastMCP` and `uv`.
 
@@ -31,13 +31,13 @@ Packaged as a lightweight, containerized Python service powered by `FastMCP` and
 ## Project Structure
 
 ```text
-spidergate-mcp/
+spiderweb-mcp/
 ├── auth/                 # Persistent OAuth tokens & credentials (gitignored)
 ├── docker/
 │   ├── Dockerfile
 │   └── docker-compose.yml
 ├── src/
-│   └── spidergate/
+│   └── spiderweb_mcp/
 │       ├── auth/         # OAuth2 handlers and client factories
 │       ├── tools/        # Modular tool definitions (Calendar, Tasks, GitHub, Meta)
 │       └── server.py     # FastMCP gateway entry point
@@ -58,8 +58,8 @@ GitHub Personal Access Token (classic with repo scope or fine-grained)
 Clone the repository:
 
 Bash
-git clone [https://github.com/YOUR_USERNAME/spidergate-mcp.git](https://github.com/YOUR_USERNAME/spidergate-mcp.git)
-cd spidergate-mcp
+git clone https://github.com/YOUR_USERNAME/spiderweb-mcp.git
+cd spiderweb-mcp
 Setup environment variables:
 
 Bash
@@ -74,7 +74,7 @@ Run the one-time OAuth authorization flow:
 
 Bash
 # Run directly or inside the virtual environment
-uv run python -m spidergate.auth.init_oauth
+uv run python -m spiderweb_mcp.auth.init_oauth
 
 (Follow the terminal link, authorize access, and paste the resulting code to generate auth/token.json).
 
@@ -86,11 +86,11 @@ docker compose -f docker/docker-compose.yml up -d --build
 Verify that the container is running:
 
 Bash
-docker ps --filter "name=runtime_spidergate"
+docker ps --filter "name=runtime_spiderweb-mcp"
 Connecting to Claude Code
 Add Spidergate directly to Claude Code via standard I/O:
 
 Bash
-claude mcp add spidergate -- docker exec -i runtime_spidergate spidergate
+claude mcp add spiderweb-mcp -- docker exec -i runtime_spiderweb-mcp spiderweb-mcp
 Inside Claude Code, run /mcp to verify the connection. All 14 tools will register automatically.
 
