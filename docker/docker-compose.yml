@@ -9,3 +9,15 @@ services:
       - ../auth:/app/auth
     env_file:
       - ../.env
+
+  # Local SearXNG instance for private web search
+  searxng:
+    image: docker.io/searxng/searxng:latest
+    container_name: searxng
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8888:8080"
+    environment:
+      - SEARXNG_BASE_URL=http://localhost:8888/
+    volumes:
+      - ../searxng:/etc/searxng:rw

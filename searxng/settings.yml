@@ -1,0 +1,9 @@
+use_default_settings: true
+
+server:
+  secret_key: "local_dev_secret_key"
+
+search:
+  formats:
+    - html
+    - json  # Required for FastMCP JSON queries
