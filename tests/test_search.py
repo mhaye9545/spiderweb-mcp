@@ -1,4 +1,4 @@
-import asyncio
+﻿import asyncio
 
 import httpx
 from spiderweb_mcp.tools import search
@@ -88,3 +88,16 @@ def test_web_search_skips_query_when_probe_is_unhealthy(monkeypatch) -> None:
 
     assert result == "SearXNG returned status 503. Is the container running?"
     assert calls == [{"q": "_health", "format": "json"}]
+
+
+def test_web_search_no_results(monkeypatch) -> None:
+    """When query yields zero results, return informative message."""
+    calls: list[dict] = []
+    web_search = _web_search(
+        monkeypatch,
+        [_Client(_Response(), calls), _Client(_Response(results=[]), calls)],
+    )
+
+    result = asyncio.run(web_search("super_obscure_query_12345"))
+
+    assert "No results found for query: super_obscure_query_12345" in result

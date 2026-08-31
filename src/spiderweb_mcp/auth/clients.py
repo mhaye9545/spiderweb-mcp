@@ -39,6 +39,7 @@ def get_google_services() -> Tuple[Resource, Resource]:
                 f"Valid Google OAuth token not found at '{token_path}'. Run 'spiderweb-mcp-auth' or 'python -m spiderweb_mcp.auth.init_oauth' first."
             )
 
+
     calendar_service = build("calendar", "v3", credentials=creds)
     tasks_service = build("tasks", "v1", credentials=creds)
     return calendar_service, tasks_service

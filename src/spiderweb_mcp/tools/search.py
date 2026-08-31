@@ -12,9 +12,9 @@ from fastmcp import FastMCP
 SEARXNG_URL = "http://127.0.0.1:8888/search"
 
 
-def _unreachable_message(error: Exception) -> str:
+def _unreachable_message(err: Exception) -> str:
     return (
-        f"Local SearXNG instance is unreachable ({error}).\n"
+        f"Local SearXNG instance is unreachable ({err}).\n"
         "Start it with:\n"
         "  docker compose -f docker/docker-compose.yml up -d searxng\n"
         "Verify with curl: http://127.0.0.1:8888/search?q=test&format=json"
@@ -35,20 +35,24 @@ def register_search_tools(mcp: FastMCP) -> None:
         Returns:
             Formatted plain-text search results with title, URL, and snippet.
         """
+        # Quick health check (1s timeout) to avoid a long timeout if host is down
+        try:
+            async with httpx.AsyncClient(timeout=1.0) as probe:
+                r = await probe.get(SEARXNG_URL, params={"q": "_health", "format": "json"})
+                if r.status_code != 200:
+                    return f"SearXNG returned status {r.status_code}. Is the container running?"
+        except (httpx.ConnectError, httpx.ReadTimeout) as err:
+            return _unreachable_message(err)
+        except httpx.HTTPError:
+            # Other errors fall through to main query
+            pass
+
         params = {
             "q": query,
             "format": "json",
         }
 
         try:
-            try:
-                async with httpx.AsyncClient(timeout=1.0) as probe:
-                    health = await probe.get(SEARXNG_URL, params={"q": "_health", "format": "json"})
-                    if health.status_code != 200:
-                        return f"SearXNG returned status {health.status_code}. Is the container running?"
-            except (httpx.ConnectError, httpx.ReadTimeout) as err:
-                return _unreachable_message(err)
-
             async with httpx.AsyncClient(timeout=10.0) as client:
                 response = await client.get(SEARXNG_URL, params=params)
                 response.raise_for_status()
@@ -71,3 +75,4 @@ def register_search_tools(mcp: FastMCP) -> None:
             return _unreachable_message(err)
         except httpx.HTTPError as err:
             return f"Search backend error: {err}"
+

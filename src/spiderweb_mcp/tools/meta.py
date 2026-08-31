@@ -12,4 +12,4 @@ def register_meta_tools(mcp: FastMCP) -> None:
             f"Spiderweb MCP Gateway: ONLINE\n"
             f"Working Directory: {os.getcwd()}\n"
             f"Python Runtime: {sys.version.split()[0]}"
-        )
+        )
